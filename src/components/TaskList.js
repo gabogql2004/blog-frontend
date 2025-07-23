@@ -6,7 +6,7 @@ function TaskList() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/tasks')
+    axios.get('http://localhost:5000/api/tasks')
       .then(res => setTasks(res.data))
       .catch(err => console.error(err));
   }, []);
