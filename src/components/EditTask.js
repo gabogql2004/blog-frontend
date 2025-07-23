@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 function EditTask() {
   const { id } = useParams();
@@ -9,10 +9,13 @@ function EditTask() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/api/tasks/${id}`)
+    axios.get(`/api/tasks`)
       .then(res => {
-        setTitle(res.data.title);
-        setDescription(res.data.description);
+        const task = res.data.find(t => t._id === id);
+        if (task) {
+          setTitle(task.title);
+          setDescription(task.description || '');
+        }
       })
       .catch(err => console.error(err));
   }, [id]);
@@ -25,16 +28,16 @@ function EditTask() {
   };
 
   return (
-    <div>
-      <h2>Edit Task</h2>
+    <div className="card shadow-sm p-4">
+      <h3 className="mb-3">✏️ Edit Task</h3>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Title</label>
-          <input type="text" className="form-control" value={title} onChange={e => setTitle(e.target.value)} required />
+          <label className="form-label">Title <span className="text-danger">*</span></label>
+          <input type="text" className="form-control" required value={title} onChange={e => setTitle(e.target.value)} />
         </div>
         <div className="mb-3">
           <label className="form-label">Description</label>
-          <textarea className="form-control" value={description} onChange={e => setDescription(e.target.value)} />
+          <textarea className="form-control" rows="3" value={description} onChange={e => setDescription(e.target.value)}></textarea>
         </div>
         <button type="submit" className="btn btn-success">Update Task</button>
       </form>

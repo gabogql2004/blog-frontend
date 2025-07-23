@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -6,7 +6,7 @@ function TaskList() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/tasks')
+    axios.get('/api/tasks')
       .then(res => setTasks(res.data))
       .catch(err => console.error(err));
   }, []);
@@ -19,18 +19,27 @@ function TaskList() {
 
   return (
     <div>
-      <h2>Tasks</h2>
-      <ul className="list-group">
-        {tasks.map(task => (
-          <li key={task._id} className="list-group-item d-flex justify-content-between align-items-center">
-            {task.title}
-            <div>
-              <Link to={`/edit/${task._id}`} className="btn btn-sm btn-warning me-2">Edit</Link>
-              <button onClick={() => deleteTask(task._id)} className="btn btn-sm btn-danger">Delete</button>
+      <h2 className="mb-4">📋 Your Tasks</h2>
+      {tasks.length === 0 ? (
+        <p className="text-muted">You have no tasks yet. Click "Add Task" to get started.</p>
+      ) : (
+        <div className="row g-3">
+          {tasks.map(task => (
+            <div className="col-md-6" key={task._id}>
+              <div className="card shadow-sm">
+                <div className="card-body">
+                  <h5 className="card-title mb-1">{task.title}</h5>
+                  {task.description && <p className="card-text text-muted">{task.description}</p>}
+                  <div className="d-flex justify-content-end">
+                    <Link to={`/edit/${task._id}`} className="btn btn-sm btn-outline-secondary me-2">✏️ Edit</Link>
+                    <button onClick={() => deleteTask(task._id)} className="btn btn-sm btn-outline-danger">🗑 Delete</button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </li>
-        ))}
-      </ul>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

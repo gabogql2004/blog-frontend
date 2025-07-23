@@ -9,13 +9,13 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div className="container mt-4">
+      <main className="container mt-5">
         <Routes>
           <Route path="/" element={<TaskList />} />
           <Route path="/add" element={<AddTask />} />
           <Route path="/edit/:id" element={<EditTask />} />
         </Routes>
-      </div>
+      </main>
     </Router>
   );
 }
