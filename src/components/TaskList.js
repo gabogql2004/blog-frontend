@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+const BASE_URL = 'https://taskmanager-backend-uq6d.onrender.com/api/tasks';
+
 function TaskList() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/tasks')
+    axios.get(BASE_URL)
       .then(res => setTasks(res.data))
       .catch(err => console.error(err));
   }, []);
 
   const deleteTask = (id) => {
-    axios.delete(`/api/tasks/${id}`)
+    axios.delete(`${BASE_URL}/${id}`)
       .then(() => setTasks(tasks.filter(task => task._id !== id)))
       .catch(err => console.error(err));
   };

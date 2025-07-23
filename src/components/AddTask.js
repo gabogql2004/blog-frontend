@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const BASE_URL = 'https://taskmanager-backend-uq6d.onrender.com/api/tasks';
+
 function AddTask() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -9,7 +11,7 @@ function AddTask() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('/api/tasks', { title, description })
+    axios.post(BASE_URL, { title, description })
       .then(() => navigate('/'))
       .catch(err => console.error(err));
   };

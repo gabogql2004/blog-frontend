@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
+const BASE_URL = 'https://taskmanager-backend-uq6d.onrender.com/api/tasks';
+
 function EditTask() {
   const { id } = useParams();
   const [title, setTitle] = useState('');
@@ -9,7 +11,7 @@ function EditTask() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/api/tasks`)
+    axios.get(BASE_URL)
       .then(res => {
         const task = res.data.find(t => t._id === id);
         if (task) {
@@ -22,7 +24,7 @@ function EditTask() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`/api/tasks/${id}`, { title, description })
+    axios.put(`${BASE_URL}/${id}`, { title, description })
       .then(() => navigate('/'))
       .catch(err => console.error(err));
   };
