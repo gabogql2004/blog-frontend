@@ -3,11 +3,16 @@ import { Link } from 'react-router-dom';
 import { api } from '../api';
 import Loading from './Loading';
 import EmptyState from './EmptyState';
+import ConfirmModal from './ConfirmModal';
+import ToastMessage from './ToastMessage';
 
 function TaskList() {
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);      // NEW
-  const [error, setError] = useState('');            // optional small touch
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '', variant: 'success' });
 
   const fetchTasks = () => {
     setLoading(true);
@@ -20,15 +25,27 @@ function TaskList() {
 
   useEffect(fetchTasks, []);
 
-  const deleteTask = (id) => {
-    // optimistic remove
+  const handleDeleteClick = (task) => {
+    setTaskToDelete(task);
+    setShowModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (!taskToDelete) return;
     const prev = tasks;
-    setTasks(prev.filter(t => t._id !== id));
-    api.delete(`/tasks/${id}`)
+    setTasks(prev.filter(t => t._id !== taskToDelete._id));
+
+    api.delete(`/tasks/${taskToDelete._id}`)
+      .then(() => {
+        setToast({ show: true, message: 'Task deleted successfully', variant: 'success' });
+      })
       .catch(() => {
-        // rollback on error
         setTasks(prev);
-        setError('Delete failed. Try again.');
+        setToast({ show: true, message: 'Failed to delete task', variant: 'danger' });
+      })
+      .finally(() => {
+        setShowModal(false);
+        setTaskToDelete(null);
       });
   };
 
@@ -60,7 +77,7 @@ function TaskList() {
                       ✏️ Edit
                     </Link>
                     <button
-                      onClick={() => deleteTask(task._id)}
+                      onClick={() => handleDeleteClick(task)}
                       className="btn btn-sm btn-outline-danger"
                     >
                       🗑 Delete
@@ -72,6 +89,23 @@ function TaskList() {
           ))}
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        onConfirm={confirmDelete}
+        title="Delete Task"
+        body={`Are you sure you want to delete "${taskToDelete?.title}"?`}
+      />
+
+      {/* Toast Notification */}
+      <ToastMessage
+        show={toast.show}
+        onClose={() => setToast({ ...toast, show: false })}
+        message={toast.message}
+        variant={toast.variant}
+      />
     </div>
   );
 }
