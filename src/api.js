@@ -1,5 +1,8 @@
 import axios from 'axios';
 
-export const api = axios.create({
-    baseURL: 'https://taskmanager-backend-uq6d.onrender.com/api'
-})
+// Use env var in production; fall back to localhost for local dev
+const baseURL =
+  process.env.REACT_APP_API_URL ||
+  'http://localhost:5000/api';
+
+export const api = axios.create({ baseURL });

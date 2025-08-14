@@ -23,9 +23,11 @@ function AddTask() {
           <input
             className="form-control"
             required
+            minLength={3}
             value={title}
             onChange={e => setTitle(e.target.value)}
           />
+          <small className="text-muted">At least 3 characters</small>
         </div>
         <div className="mb-3">
           <label className="form-label">Description</label>

@@ -1,13 +1,52 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Base tokens */
+:root {
+  --bg: #f8f9fa;        /* light background */
+  --card: #ffffff;      /* light card */
+  --text: #212529;      /* light text */
+  --muted: #6c757d;
+  --border: #dee2e6;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Dark theme overrides */
+:root[data-theme="dark"] {
+  --bg: #0f1115;        /* dark background */
+  --card: #151922;      /* dark card */
+  --text: #e9ecef;      /* light text on dark */
+  --muted: #9aa3af;
+  --border: #2b2f3a;
+}
+
+/* Apply to body and common elements */
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+/* Text utilities override for better contrast in dark mode */
+.text-muted {
+  color: var(--muted) !important;
+}
+
+/* Dialog (native <dialog> if used) */
+dialog {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: .5rem;
+}
+
+/* Inputs */
+.form-control, .form-select {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
+}
+.form-control::placeholder {
+  color: var(--muted);
 }
