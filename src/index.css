@@ -1,19 +1,21 @@
 /* Base tokens */
 :root {
-  --bg: #f8f9fa;        /* light background */
-  --card: #ffffff;      /* light card */
-  --text: #212529;      /* light text */
+  --bg: #f8f9fa;        
+  --card: #ffffff;      
+  --text: #212529;      
   --muted: #6c757d;
   --border: #dee2e6;
+  --link: #0d6efd;
 }
 
 /* Dark theme overrides */
 :root[data-theme="dark"] {
-  --bg: #0f1115;        /* dark background */
-  --card: #151922;      /* dark card */
-  --text: #e9ecef;      /* light text on dark */
+  --bg: #0f1115;        
+  --card: #151922;      
+  --text: #e9ecef;      
   --muted: #9aa3af;
   --border: #2b2f3a;
+  --link: #6ea8fe;
 }
 
 /* Apply to body and common elements */
@@ -23,10 +25,26 @@ body {
 }
 
 /* Cards */
-.card {
-  background: var(--card);
-  border-color: var(--border);
-}
+.card { background: var(--card); border-color: var(--border); }
+.form-control, .form-select { background: var(--card); color: var(--text); border-color: var(--border); }
+.form-control::placeholder { color: var(--muted); }
+
+/* Links readable in dark */
+a { color: var(--link); }
+a:hover { color: var(--link); opacity: .9; }
+
+/* Utilities that can stay too dark in dark mode */
+:root[data-theme="dark"] .text-dark { color: var(--text) !important; }
+:root[data-theme="dark"] .bg-white { background-color: var(--card) !important; }
+:root[data-theme="dark"] .border { border-color: var(--border) !important; }
+
+/* Alerts & toasts (ensure contrast) */
+.toast, .alert { color: #fff; }                /* keep text white on colored bg */
+.alert-light { color: var(--text); background: var(--card); border-color: var(--border); }
+
+/* Tables (if used) */
+.table { color: var(--text); }
+.table > :not(caption) > * > * { background: transparent; border-color: var(--border); }
 
 /* Text utilities override for better contrast in dark mode */
 .text-muted {
@@ -40,6 +58,10 @@ dialog {
   border: 1px solid var(--border);
   border-radius: .5rem;
 }
+
+/* Labels & helper text */
+label, .form-label, .form-text { color: var(--muted); }
+:root[data-theme="dark"] .form-text { color: var(--muted) !important; }
 
 /* Inputs */
 .form-control, .form-select {

@@ -9,8 +9,9 @@ export function ThemeProvider({ children }) {
   });
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.setAttribute('data-bs-theme', theme); // NEW for Bootstrap 5.3+
+  localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggle = () => setTheme(t => (t === 'light' ? 'dark' : 'light'));
