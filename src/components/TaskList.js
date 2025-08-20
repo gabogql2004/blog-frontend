@@ -14,7 +14,7 @@ function TaskList() {
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [toast, setToast] = useState({ show: false, message: '', variant: 'success' });
 
-  // NEW: search & filter
+  // search & filter
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('all'); // all | active | completed
 
@@ -29,7 +29,7 @@ function TaskList() {
 
   useEffect(fetchTasks, []);
 
-  // NEW: toggle completed (optimistic)
+  // toggle completed (optimistic)
   const toggleComplete = (task) => {
     const optimistic = tasks.map(t => t._id === task._id ? { ...t, completed: !t.completed } : t);
     setTasks(optimistic);
@@ -41,7 +41,7 @@ function TaskList() {
       });
   };
 
-  // Delete flow (confirm modal + optimistic remove)
+  // delete flow (confirm modal + optimistic remove)
   const handleDeleteClick = (task) => {
     setTaskToDelete(task);
     setShowModal(true);
@@ -63,7 +63,7 @@ function TaskList() {
       });
   };
 
-  // NEW: computed list with query + filter
+  // computed list with query + filter
   const filtered = useMemo(() => {
     let list = tasks;
     if (filter === 'active')   list = list.filter(t => !t.completed);
@@ -80,7 +80,7 @@ function TaskList() {
 
   return (
     <div>
-      {/* Top bar: title + search + filter + add */}
+      {/* Top bar: title + search + filter (Add button removed) */}
       <div className="mb-4">
         <div className="row g-2 align-items-center">
           <div className="col-12 col-md">
@@ -107,9 +107,7 @@ function TaskList() {
               <option value="completed">Completed</option>
             </select>
           </div>
-          <div className="col-6 col-sm-3 col-md-auto d-flex justify-content-end">
-            <Link className="btn btn-primary w-100 w-md-auto" to="/add">➕ Add Task</Link>
-          </div>
+          {/* Removed the Add Task button block here */}
         </div>
       </div>
 
