@@ -60,4 +60,4 @@ Backend runs by default on: http://localhost:5000
 
 ## 👤 Author
 Developed by Gabriel Quijada — Full-Stack Developer
-Portfolio: [Your Upwork Profile Link]
+Portfolio: https://www.upwork.com/freelancers/~0157ea22d18b2725e6?viewMode=1
